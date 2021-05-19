@@ -12,6 +12,7 @@
   },
   "scripts": {
     "start": "http-server -o",
-    "cypress:open": "cypress open"
+    "cy:open": "cypress open",
+    "cy:run:chrome": "yarn run cypress run --browser chrome --headless"
   }
 }
