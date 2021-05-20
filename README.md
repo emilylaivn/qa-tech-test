@@ -5,5 +5,5 @@ yarn
 yarn start
 
 New Terminal:
-yarn run cypress:open
+yarn run cy:open
 
