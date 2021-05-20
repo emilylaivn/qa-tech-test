@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "dependencies": {
+    "director": "^1.2.0",
+    "todomvc-app-css": "^2.0.0",
+    "todomvc-common": "^1.0.1",
+    "vue": "^2.1.8"
+  },
+  "devDependencies": {
+    "cypress": "^7.3.0",
+    "http-server": "^0.12.3"
+  },
+  "scripts": {
+    "start": "http-server -o",
+    "cy:open": "cypress open",
+    "cy:run:chrome": "yarn run cypress run --browser chrome --headless"
+  }
+}
