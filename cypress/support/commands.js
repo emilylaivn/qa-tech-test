@@ -1,3 +1,8 @@
+import {
+    TODO_SELECTORS,
+    ACTIONBAR_SELECTORS,
+  } from './selector';
+
 Cypress.Commands.add("loadData", (todos) => {
     let data = [];
     todos.forEach(todo => {
@@ -12,5 +17,5 @@ Cypress.Commands.add("loadData", (todos) => {
 })
 
 Cypress.Commands.add("deleteItem", (name) => {
-    cy.get('.todo').contains(name).siblings('.destroy').click({force: true});
+    cy.get(TODO_SELECTORS.TODO).contains(name).siblings(TODO_SELECTORS.DESTROY).click({force: true});
 })

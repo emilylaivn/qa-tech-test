@@ -1,4 +1,9 @@
-//create and use selectors on demand among test cases
+//reuse selectors among test cases
+ 
+import {
+    TODO_SELECTORS,
+    ACTIONBAR_SELECTORS,
+  } from '../support/selector';
 
 describe('Todo list test', () => {
     beforeEach(() => {
@@ -12,20 +17,20 @@ describe('Todo list test', () => {
     });
 
     it('should enter a new todo', () => {
-        cy.get('.new-todo').type('fake@email.com{enter}');
-        cy.get('.todo').should('contain.text', 'fake@email.com');
+        cy.get(TODO_SELECTORS.NEW_TODO).type('fake@email.com{enter}');
+        cy.get(TODO_SELECTORS.TODO).should('contain.text', 'fake@email.com');
     });
 
     it('should filter items', () => {
         // "Active" should only display active items
-        cy.contains("Active").click();
-        cy.get("li.todo").each((todo) => {
+        cy.get(ACTIONBAR_SELECTORS.ACTIVE).click();
+        cy.get(TODO_SELECTORS.TODO).each((todo) => {
             cy.wrap(todo).should("not.have.class", "completed")
         });
 
         // "Completed" should only display completed items
-        cy.contains("Completed").click();
-        cy.get("li.todo").each((todo) => {
+        cy.get(ACTIONBAR_SELECTORS.COMPLETED).click();
+        cy.get(TODO_SELECTORS.TODO).each((todo) => {
             cy.wrap(todo).should("have.class", "completed")
         });
     });
@@ -34,10 +39,10 @@ describe('Todo list test', () => {
         // Mark "Item 3" as completed
 
         //ACT
-        cy.get('.todo').contains('Item 3').siblings('input').check({force: true});
+        cy.get(TODO_SELECTORS.TODO).contains('Item 3').siblings(TODO_SELECTORS.TOGGLE).check({force: true});
 
         //ASSERT
-        cy.get('.todo').contains('Item 3').parents('.todo').should('have.class', 'completed');
+        cy.get(TODO_SELECTORS.TODO).contains('Item 3').parents(TODO_SELECTORS.TODO).should('have.class', 'completed');
         
 
     });
@@ -48,15 +53,15 @@ describe('Todo list test', () => {
         
         //ACT & ASSERT
         //#1 - check all items
-        cy.get('#toggle-all').click();
-        cy.get("li.todo").each((todo) => {
+        cy.get(TODO_SELECTORS.TOGGLEALL).click();
+        cy.get(TODO_SELECTORS.TODO).each((todo) => {
             cy.wrap(todo).should("have.class", "completed")
         });
 
         
         //#2 - uncheck all items
-        cy.get('#toggle-all').click();
-        cy.get("li.todo").each((todo) => {
+        cy.get(TODO_SELECTORS.TOGGLEALL).click();
+        cy.get(TODO_SELECTORS.TODO).each((todo) => {
             cy.wrap(todo).should("not.have.class", "completed")
         });
     });
@@ -66,35 +71,33 @@ describe('Todo list test', () => {
         
         //ACT & ASSERT
         //#1 - check all items
-        cy.get('#toggle-all').click();
-        cy.get('.todo-count').contains("0 items left");
+        cy.get(TODO_SELECTORS.TOGGLEALL).click();
+        cy.get(ACTIONBAR_SELECTORS.COUNT).contains("0 items left");
         
         //#2 - uncheck all items
-        cy.get('#toggle-all').click();
-        cy.get('.todo-count').contains("3 items left");
+        cy.get(TODO_SELECTORS.TOGGLEALL).click();
+        cy.get(ACTIONBAR_SELECTORS.COUNT).contains("3 items left");
     });
 
     it('should clear completed items', () => {
         // "Clear completed" removes completed items
         
         //ACT
-        cy.get('.clear-completed').click();
+        cy.get(ACTIONBAR_SELECTORS.CLEAR_COMPLETED).click();
 
         //ASSERT
-        cy.get('.todo-count').contains("2 items left");
-        cy.get('li.todo').should("have.lengthOf", 2);
+        cy.get(ACTIONBAR_SELECTORS.COUNT).contains("2 items left");
+        cy.get(TODO_SELECTORS.TODO).should("have.lengthOf", 2);
     });
 
     it('should delete an item', () => {
         // Delete an item whether it is completed or not
 
         //ACT
-        //cy.get('.todo').contains('Item 1').siblings('.destroy').click({force: true});
         let itemName = 'Item 1';
         cy.deleteItem(itemName);
 
         //ASSERT
-        //cy.get('.todo').should('not.contain.text', 'Item 1');
-        cy.get('.todo').should('not.contain.text', itemName);
+        cy.get(TODO_SELECTORS.TODO).should('not.contain.text', itemName);
     });
 })
