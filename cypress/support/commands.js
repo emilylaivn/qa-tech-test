@@ -10,3 +10,7 @@ Cypress.Commands.add("loadData", (todos) => {
 
     window.localStorage.setItem("todos-vuejs", JSON.stringify(data));
 })
+
+Cypress.Commands.add("deleteItem", (name) => {
+    cy.get('.todo').contains(name).siblings('.destroy').click({force: true});
+})

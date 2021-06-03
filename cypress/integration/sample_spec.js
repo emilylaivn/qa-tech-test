@@ -6,7 +6,7 @@ describe('Todo list test', () => {
             {"title": "Item 3", "completed": false}];
 
         cy.loadData(todoItems);
-        cy.visit('http://127.0.0.1:8080/');
+        cy.visit(Cypress.env('baseUrl'));
     });
 
     it('should enter a new todo', () => {
@@ -87,9 +87,12 @@ describe('Todo list test', () => {
         // Delete an item whether it is completed or not
 
         //ACT
-        cy.get('.todo').contains('Item 1').siblings('.destroy').click({force: true});
+        //cy.get('.todo').contains('Item 1').siblings('.destroy').click({force: true});
+        let itemName = 'Item 1';
+        cy.deleteItem(itemName);
 
         //ASSERT
-        cy.get('.todo').should('not.contain.text', 'Item 1');
+        //cy.get('.todo').should('not.contain.text', 'Item 1');
+        cy.get('.todo').should('not.contain.text', itemName);
     });
 })
